@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package socnet;
+
+import "google/api/annotations.proto";
+
+service SocNet {
+  rpc UserRegister (UserRegisterRequest) returns (UserRegisterResponse) {
+    option (google.api.http) = {
+      post: "/user/register"
+      body: "*"
+    };
+  }
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/user/get/{id}"
+    };
+  }
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/login"
+      body: "*"
+    };
+  }
+}
+
+message UserRegisterRequest {
+  string FirstName = 1;
+  string SecondName = 2;
+  int64 dateBirth = 3;
+  string biography = 4;
+  string city = 5;
+  string password = 6;
+
+}
+
+message UserRegisterResponse {
+  string UserID = 1;
+}
+
+message GetUserRequest {
+  string UserID = 1;
+}
+
+message GetUserResponse {
+  string Status = 1;
+}
+
+message LoginRequest {
+  string UserID = 1;
+  string password = 2;
+
+}
+
+message LoginResponse {
+  string Status = 1;
+}

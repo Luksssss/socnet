@@ -1,0 +1,5 @@
+/bin/
+/tmp/
+/vendor/
+/.env
+/dockers/
