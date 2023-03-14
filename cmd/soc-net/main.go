@@ -3,17 +3,21 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
+	"net/http"
 	"time"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"otus/socNet/database"
 	database_adapter "otus/socNet/internal/adapter/database"
 	socnet_adapter "otus/socNet/internal/adapter/soc_net"
 	"otus/socNet/internal/app/soc_net"
-	pb "otus/socNet/internal/pb"
+	pb "otus/socNet/internal/pb/api/socnet"
 )
 
 const pingAttemptCount = 3
@@ -35,6 +39,8 @@ func main() {
 		log.Fatalf("failed initService: %v", err)
 	}
 	i := soc_net.NewSocNetAPI(adapter)
+
+	go runRest(ctx, cfg)
 
 	s := grpc.NewServer()
 	pb.RegisterSocNetServer(s, i)
@@ -100,4 +106,19 @@ func checkConnectivity(ctx context.Context, pool *pgxpool.Pool) error {
 		}
 	}
 	return err
+}
+
+func runRest(ctx context.Context, cfg *Config) {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+	mux := runtime.NewServeMux()
+	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	err := pb.RegisterSocNetHandlerFromEndpoint(ctx, mux, fmt.Sprintf(":%d", cfg.Port), opts)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf(fmt.Sprintf("server http listening at %d", cfg.HttpPort))
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", cfg.HttpPort), mux); err != nil {
+		panic(err)
+	}
 }

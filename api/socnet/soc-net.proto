@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package socnet;
 
+option go_package = "./socnet/api";
+
 import "google/api/annotations.proto";
 
 service SocNet {
@@ -13,7 +15,7 @@ service SocNet {
   }
   rpc GetUser (GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {
-      get: "/user/get/{id}"
+      get: "/user/get/{userID}"
     };
   }
   rpc Login (LoginRequest) returns (LoginResponse) {
@@ -25,8 +27,8 @@ service SocNet {
 }
 
 message UserRegisterRequest {
-  string FirstName = 1;
-  string SecondName = 2;
+  string firstName = 1;
+  string secondName = 2;
   int64 dateBirth = 3;
   string biography = 4;
   string city = 5;
@@ -35,23 +37,23 @@ message UserRegisterRequest {
 }
 
 message UserRegisterResponse {
-  string UserID = 1;
+  string userID = 1;
 }
 
 message GetUserRequest {
-  string UserID = 1;
+  string userID = 1;
 }
 
 message GetUserResponse {
-  string Status = 1;
+  string status = 1;
 }
 
 message LoginRequest {
-  string UserID = 1;
+  string userID = 1;
   string password = 2;
 
 }
 
 message LoginResponse {
-  string Status = 1;
+  string status = 1;
 }

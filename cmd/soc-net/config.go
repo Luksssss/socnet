@@ -12,7 +12,8 @@ type Config struct {
 	Development bool `envconfig:"DEVELOPMENT" default:"false"`
 
 	// Port to listen on
-	Port int `envconfig:"PORT" default:"8080"`
+	Port     int `envconfig:"PORT" default:"8080"`
+	HttpPort int `envconfig:"PORT" default:"8081"`
 
 	// PostgreSQL server
 	PGHost     string `envconfig:"POSTGRES_HOST" required:"true"`

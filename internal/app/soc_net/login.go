@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"otus/socNet/internal/hash"
-	pb "otus/socNet/internal/pb"
+	pb "otus/socNet/internal/pb/api/socnet"
 	"otus/socNet/internal/structs"
 )
 
@@ -38,7 +38,10 @@ func (i *Implementation) Login(ctx context.Context, req *pb.LoginRequest) (*pb.L
 }
 
 func convLogin(req *pb.LoginRequest) (*structs.UserLogin, error) {
-	id, err := strconv.ParseInt(req.GetUserID(), 10, 64)
+	if req.GetUserID() == "" {
+		return nil, fmt.Errorf("empty userID")
+	}
+	id, err := strconv.ParseInt(req.UserID, 10, 64)
 	if err != nil {
 		return nil, err
 	}

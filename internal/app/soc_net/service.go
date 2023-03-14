@@ -1,7 +1,7 @@
 package soc_net
 
 import (
-	pb "otus/socNet/internal/pb"
+	pb "otus/socNet/internal/pb/api/socnet"
 )
 
 type Implementation struct {

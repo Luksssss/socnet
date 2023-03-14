@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"otus/socNet/internal/hash"
-	pb "otus/socNet/internal/pb"
+	pb "otus/socNet/internal/pb/api/socnet"
 	"otus/socNet/internal/structs"
 )
 

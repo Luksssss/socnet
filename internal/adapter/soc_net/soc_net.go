@@ -2,6 +2,7 @@ package soc_net
 
 import (
 	"context"
+	"strconv"
 
 	"otus/socNet/internal/structs"
 )
@@ -22,7 +23,7 @@ func (s *service) UserRegister(ctx context.Context, userData *structs.User) (str
 	if err != nil {
 		return "", err
 	}
-	return string(id), nil
+	return strconv.FormatInt(id, 10), nil
 }
 
 func (s *service) GetUser(ctx context.Context, userID int64) (structs.StatusUserDB, error) {

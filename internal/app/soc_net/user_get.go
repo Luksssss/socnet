@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	pb "otus/socNet/internal/pb"
+	pb "otus/socNet/internal/pb/api/socnet"
 	"otus/socNet/internal/structs"
 )
 
