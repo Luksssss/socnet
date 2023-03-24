@@ -371,6 +371,8 @@ INSERT INTO city (name) VALUES
     ('Ялта'),
     ('Ярославль');
 
+CREATE INDEX full_name_idx ON users (lower(first_name) text_pattern_ops, lower(second_name) text_pattern_ops);
+
 -- +goose StatementEnd
 
 -- +goose Down

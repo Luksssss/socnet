@@ -24,6 +24,11 @@ service SocNet {
       body: "*"
     };
   }
+  rpc UserSearch (UserSearchRequest) returns (UserSearchResponse) {
+    option (google.api.http) = {
+      get: "/user/search"
+    };
+  }
 }
 
 message UserRegisterRequest {
@@ -56,4 +61,19 @@ message LoginRequest {
 
 message LoginResponse {
   string status = 1;
+}
+
+message UserSearchRequest {
+  string firstName = 1;
+  string secondName = 2;
+}
+
+message UserSearchResponse {
+  repeated UserInfo userInfo = 1;
+}
+
+message UserInfo {
+  string firstName = 1;
+  string secondName = 2;
+  string dateBirth = 3;
 }

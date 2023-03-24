@@ -41,3 +41,11 @@ func (s *service) Login(ctx context.Context, login *structs.UserLogin) (*structs
 	}
 	return login, nil
 }
+
+func (s *service) UserSearch(ctx context.Context, userSearch *structs.UserSearch) ([]*structs.UserSearchRes, error) {
+	users, err := s.storage.SearchUsers(ctx, userSearch)
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}

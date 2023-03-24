@@ -64,3 +64,14 @@ type UserLogin struct {
 	Hash string
 	Pass string
 }
+
+type UserSearch struct {
+	FirstName  string
+	SecondName string
+}
+
+type UserSearchRes struct {
+	FirstName  string
+	SecondName string
+	DateBirth  time.Time
+}

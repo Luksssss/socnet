@@ -2,5 +2,6 @@
 /tmp/
 /vendor/
 /.env
+/scripts/.env
 /dockers/
 /.idea

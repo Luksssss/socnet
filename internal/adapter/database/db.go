@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"github.com/jackc/pgx/v4"
 	"otus/socNet/database"
 	"otus/socNet/internal/structs"
@@ -78,4 +79,31 @@ func (s *service) GetHash(ctx context.Context, login *structs.UserLogin) (*struc
 	}
 	login.Hash = hash
 	return login, nil
+}
+
+func (s *service) SearchUsers(ctx context.Context, userSearch *structs.UserSearch) ([]*structs.UserSearchRes, error) {
+	query := `select first_name, second_name, date_birth from users where 
+                                                          lower(first_name) like $1 || '%' AND 
+                                                          lower(second_name) like $2 || '%' order by id`
+	rows, err := s.client.DB.Query(ctx, query,
+		userSearch.FirstName,
+		userSearch.SecondName,
+	)
+	if err == pgx.ErrNoRows {
+		return nil, fmt.Errorf("невалидные данные")
+	} else if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	resUsers := make([]*structs.UserSearchRes, 0, 2)
+
+	for rows.Next() {
+		u := structs.UserSearchRes{}
+		err = rows.Scan(&u.FirstName, &u.SecondName, &u.DateBirth)
+		if err != nil {
+			return nil, err
+		}
+		resUsers = append(resUsers, &u)
+	}
+	return resUsers, nil
 }

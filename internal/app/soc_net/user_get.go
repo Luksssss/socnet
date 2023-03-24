@@ -21,7 +21,6 @@ func (i *Implementation) GetUser(ctx context.Context, req *pb.GetUserRequest) (*
 		if err != nil {
 			return nil, status.Error(codes.InvalidArgument, err.Error())
 		}
-
 	}
 
 	return &pb.GetUserResponse{
