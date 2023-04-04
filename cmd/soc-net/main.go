@@ -53,27 +53,46 @@ func main() {
 }
 
 func initService(ctx context.Context, cfg *Config) (soc_net.SocNetAPI, error) {
-	DBUrl := fmt.Sprintf(
+	DBUrlMaster := fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		cfg.PGUsername, cfg.PGPassword,
 		cfg.PGHost, cfg.PGPort,
 		cfg.PGDatabase,
 	)
 
-	conn, err := pgxpool.ParseConfig(DBUrl)
+	connMaster, err := pgxpool.ParseConfig(DBUrlMaster)
+	if err != nil {
+		return nil, err
+	}
+
+	DBUrlSlave := fmt.Sprintf(
+		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		cfg.PGUsername, cfg.PGPassword,
+		cfg.PGHostSlave, cfg.PGPort,
+		cfg.PGDatabase,
+	)
+
+	connSlave, err := pgxpool.ParseConfig(DBUrlSlave)
 	if err != nil {
 		return nil, err
 	}
 	//conn.MaxConns = 6
 	//conn.ConnConfig.TLSConfig = nil
-	pool, err := pgxpool.ConnectConfig(ctx, conn)
+	poolMaster, err := pgxpool.ConnectConfig(ctx, connMaster)
 	if err != nil {
 		return nil, err
 	}
-	if err = checkConnectivity(ctx, pool); err != nil {
+	if err = checkConnectivity(ctx, poolMaster); err != nil {
 		return nil, err
 	}
-	dbClient := database.New(pool)
+	poolSlave, err := pgxpool.ConnectConfig(ctx, connSlave)
+	if err != nil {
+		return nil, err
+	}
+	if err = checkConnectivity(ctx, poolSlave); err != nil {
+		return nil, err
+	}
+	dbClient := database.New(poolMaster, poolSlave)
 
 	return socnet_adapter.New(
 		database_adapter.New(dbClient),

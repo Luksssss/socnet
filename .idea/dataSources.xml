@@ -8,5 +8,19 @@
       <jdbc-url>jdbc:postgresql://172.21.0.11:5432/socnetDB</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="socnetDB@172.21.0.21" uuid="59d335d2-0dd5-4fdd-b502-bf7013d5c5a9">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://172.21.0.21:5432/socnetDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="socnetDB@172.21.0.22" uuid="378135ab-1fab-4ef7-8c35-bd407edc8220">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://172.21.0.22:5432/socnetDB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

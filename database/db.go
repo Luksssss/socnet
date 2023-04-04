@@ -4,12 +4,14 @@ import "github.com/jackc/pgx/v4/pgxpool"
 
 // Storage DB
 type Storage struct {
-	DB *pgxpool.Pool
+	DB      *pgxpool.Pool
+	DBSlave *pgxpool.Pool
 }
 
 // New DB
-func New(db *pgxpool.Pool) *Storage {
+func New(dbMaster, dbSlave *pgxpool.Pool) *Storage {
 	return &Storage{
-		DB: db,
+		DB:      dbMaster,
+		DBSlave: dbSlave,
 	}
 }

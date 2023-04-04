@@ -12,4 +12,4 @@ gen-csv:
 	@ go run ./scripts/users_from_csv.go
 
 loads-get-users:
-	@ vegeta attack -targets=./load-testing/target-get_users.list -duration=20s -rate=10 -connections=100| vegeta report
+	@ vegeta attack -targets=./load-testing/target-user-search.list -duration=20s -rate=10 -connections=100| vegeta report

@@ -1,38 +1,9 @@
 version: "3.3"
 services:
   postgres:
-    container_name: pg15
+    container_name: pg15-master
     image: postgres:15.2
-    command:
-          - "postgres"
-          - "-c"
-          - "max_connections=100"
-          - "-c"
-          - "shared_buffers=4GB"
-          - "-c"
-          - "effective_cache_size=4GB"
-          - "-c"
-          - "work_mem=32MB"
-          - "-c"
-          - "maintenance_work_mem=512MB"
-          - "-c"
-          - "random_page_cost=1.1"
-          - "-c"
-          - "temp_file_limit=10GB"
-          - "-c"
-          - "log_min_duration_statement=200ms"
-          - "-c"
-          - "idle_in_transaction_session_timeout=10s"
-          - "-c"
-          - "lock_timeout=1s"
-          - "-c"
-          - "statement_timeout=60s"
-          - "-c"
-          - "shared_preload_libraries=pg_stat_statements"
-          - "-c"
-          - "pg_stat_statements.max=10000"
-          - "-c"
-          - "pg_stat_statements.track=all"
+#     command:
 #          ускорение вставки
 #          - "-c"
 #          - "fsync=off"
@@ -46,14 +17,47 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
     volumes:
-      - .:/docker-entrypoint-initdb.d
-      - ${PWD}/dockers/pgdata:/pgdata:rw
-#        - ./postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ${PWD}/dockers/pgmaster:/var/lib/postgresql/data/pgdata:rw
+      - ${PWD}/dockers/pgmaster:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
       socnet_network:
         ipv4_address: 172.21.0.11
+
+  postgres-slave1:
+    container_name: pg15-slave1
+    image: postgres:15.2
+    environment:
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_DB: "socnetDB"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - ${PWD}/dockers/pgslave1:/var/lib/postgresql/data/pgdata:rw
+      - ${PWD}/dockers/pgslave1:/docker-entrypoint-initdb.d
+    ports:
+      - "15432:5432"
+    networks:
+      socnet_network:
+        ipv4_address: 172.21.0.21
+
+#   postgres-slave2:
+#     container_name: pg15-slave2
+#     image: postgres:15.2
+#     environment:
+#       PGDATA: "/var/lib/postgresql/data/pgdata"
+#       POSTGRES_DB: "socnetDB"
+#       POSTGRES_USER: "postgres"
+#       POSTGRES_PASSWORD: "postgres"
+#     volumes:
+#       - ${PWD}/dockers/pgslave2:/var/lib/postgresql/data/pgdata:rw
+#       - ${PWD}/dockers/pgslave2:/docker-entrypoint-initdb.d
+#     ports:
+#       - "25432:5432"
+#     networks:
+#       socnet_network:
+#         ipv4_address: 172.21.0.22
 
 networks:
   socnet_network:

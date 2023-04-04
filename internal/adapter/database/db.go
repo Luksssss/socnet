@@ -52,7 +52,7 @@ func (s *service) GetUser(ctx context.Context, userID int64) (structs.StatusUser
 	)
 
 	query := `select id from users where id = $1`
-	err := s.client.DB.QueryRow(ctx, query,
+	err := s.client.DBSlave.QueryRow(ctx, query,
 		userID,
 	).Scan(&idUser)
 	if err == pgx.ErrNoRows {
@@ -85,7 +85,7 @@ func (s *service) SearchUsers(ctx context.Context, userSearch *structs.UserSearc
 	query := `select first_name, second_name, date_birth from users where 
                                                           lower(first_name) like $1 || '%' AND 
                                                           lower(second_name) like $2 || '%' order by id`
-	rows, err := s.client.DB.Query(ctx, query,
+	rows, err := s.client.DBSlave.Query(ctx, query,
 		userSearch.FirstName,
 		userSearch.SecondName,
 	)

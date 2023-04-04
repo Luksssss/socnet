@@ -1,0 +1,10 @@
+GET http://127.0.0.1:8081/user/search?firstName=алек&secondName=вири"
+GET http://127.0.0.1:8081/user/get/7
+GET http://127.0.0.1:8081/user/search?firstName=ник&secondName=ива"
+GET http://127.0.0.1:8081/user/get/100
+GET http://127.0.0.1:8081/user/search?firstName=дан&secondName=лук"
+GET http://127.0.0.1:8081/user/get/200
+GET http://127.0.0.1:8081/user/search?firstName=евг&secondName=пет"
+GET http://127.0.0.1:8081/user/get/300
+GET http://127.0.0.1:8081/user/search?firstName=ден&secondName=рив"
+GET http://127.0.0.1:8081/user/get/400

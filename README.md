@@ -13,3 +13,5 @@
 - GRPC ручки проброшены на http (контракт `./api/soc-net.proto`)
 - примеры запросов лежат в папке postman
 - пароли пользователей хранятся в виде хэшей (с солью)
+- нагрузочное тестирование c помощью [vegeta](https://github.com/tsenart/vegeta#contributing) ./load-testing/README.md
+- настройка репликации ./replication/README.md
